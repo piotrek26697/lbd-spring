@@ -22,14 +22,14 @@ public class SpaceFleetAPI
 	@Autowired
 	SpaceFleetHandler spacefleetHandler;
 
-	@RequestMapping(path = "/{spaceshipName}", method = RequestMethod.GET)
+	@RequestMapping(path = "/{spaceshipName}", method = RequestMethod.GET, consumes = {
+			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public Spaceship getSpaceship(@PathVariable("spaceshipName") String name)
 	{
 		return spacefleetHandler.getSpaceship(name);
 	}
 
-	@RequestMapping(produces = { MediaType.APPLICATION_JSON_VALUE,
-			MediaType.APPLICATION_XML_VALUE })
+	@RequestMapping(produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public SpaceFleet getSpaceFleet()
 	{
 		return spacefleetHandler.getSpaceFleet();
