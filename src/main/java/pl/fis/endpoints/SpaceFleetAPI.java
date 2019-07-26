@@ -1,9 +1,15 @@
 package pl.fis.endpoints;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,16 +41,22 @@ public class SpaceFleetAPI
 			@ApiResponse(code = 404, message = "Spaceship not found", response = EntityNotFound.class) })
 	@RequestMapping(path = "/{spaceshipName}", method = RequestMethod.GET, consumes = {
 			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public Spaceship getSpaceship(@PathVariable("spaceshipName") String name)
+	public ResponseEntity<Spaceship> getSpaceship(@PathVariable("spaceshipName") String name)
 	{
-		return spacefleetHandler.getSpaceship(name);
+		HttpHeaders headers = new HttpHeaders();
+		CacheControl cc = CacheControl.maxAge(60, TimeUnit.SECONDS);
+		cc.cachePrivate();
+		headers.setCacheControl(cc);
+		return new ResponseEntity<>(spacefleetHandler.getSpaceship(name), headers, HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Retrive available ships", notes = "Returns Json format")
 	@RequestMapping(produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public SpaceFleet getSpaceFleet()
+	public ResponseEntity<SpaceFleet> getSpaceFleet()
 	{
-		return spacefleetHandler.getSpaceFleet();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setCacheControl("private, max-age=60");
+		return new ResponseEntity<>(spacefleetHandler.getSpaceFleet(), headers, HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Add ship to the fleet", notes = "Accepts Json format")
@@ -56,4 +68,6 @@ public class SpaceFleetAPI
 	{
 		spacefleetHandler.addSpaceship(ship);
 	}
+	
+	
 }
