@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import pl.fis.data.DataBase;
 import pl.fis.data.SpaceFleet;
 import pl.fis.data.Spaceship;
+import pl.fis.logic.errors.EntityNotFound;
 
 @Service
 public class SpaceFleetHandler

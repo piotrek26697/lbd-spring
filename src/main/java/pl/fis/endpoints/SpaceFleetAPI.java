@@ -18,8 +18,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import pl.fis.data.SpaceFleet;
 import pl.fis.data.Spaceship;
-import pl.fis.logic.EntityNotFound;
 import pl.fis.logic.SpaceFleetHandler;
+import pl.fis.logic.errors.EntityNotFound;
 
 @Api(value = "Space-fleet endpoint. Provides funcionality to operate space fleet")
 @RestController

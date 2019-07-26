@@ -1,4 +1,4 @@
-package pl.fis.logic;
+package pl.fis.logic.errors;
 
 public class EntityNotFound extends RuntimeException
 {
