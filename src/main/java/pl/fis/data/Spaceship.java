@@ -6,9 +6,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Positive;
 
+import org.springframework.hateoas.ResourceSupport;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Spaceship
+public class Spaceship extends ResourceSupport
 {
 	@NotBlank
 	private String name;

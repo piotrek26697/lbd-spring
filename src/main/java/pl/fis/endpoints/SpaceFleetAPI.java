@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -78,8 +79,14 @@ public class SpaceFleetAPI
 	public List<Spaceship> getSortedSpaceships(@RequestParam(name = "order", required = false) String order,
 			@RequestParam(name = "by", required = false) String element)
 	{
-		List<Spaceship> shipsList = spacefleetHandler.getSpaceFleet().getSpaceFleetShips();
-		shipsList = ShipSorter.sort(order, element, shipsList);
-		return shipsList;
+		List<Spaceship> shipList = spacefleetHandler.getSpaceFleet().getSpaceFleetShips();
+		shipList = ShipSorter.sort(order, element, shipList);
+		
+		for(Spaceship ship : shipList)
+		{
+			ship.add(ControllerLinkBuilder.linkTo(SpaceFleetAPI.class).slash(ship.getName()).withSelfRel());
+		}
+		
+		return shipList;
 	}
 }
